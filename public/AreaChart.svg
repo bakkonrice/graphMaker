@@ -1,0 +1,16 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+	<title>Proyecto nuevo</title>
+	<style>
+		.s0 { fill: #2b2b2b } 
+		.s1 { fill: #e57300 } 
+		.s2 { fill: #d35400 } 
+	</style>
+	<g id="Carpeta 2">
+		<path id="Forma 2" class="s0" d="m0 128c0-70.7 57.3-128 128-128 70.7 0 128 57.3 128 128 0 70.7-57.3 128-128 128-70.7 0-128-57.3-128-128z"/>
+	</g>
+	<path id="Capa 3" class="s1" d="m266 119l-64-28-60 64-84-13-55 21 32 83 84 16 73 4 74-66"/>
+	<path id="Capa 2" class="s2" d="m58.6 134.1l3.8 11.5-88.5 29-3.8-11.5z"/>
+	<path id="Capa 2 copy" class="s2" d="m149.2 149.6l-2 11.9-91.9-15.1 2-11.9z"/>
+	<path id="Capa 2 copy 2" class="s2" d="m197.1 82.9l9.2 7.9-60.6 70.7-9.2-7.9z"/>
+	<path id="Capa 2 copy 3" class="s2" d="m285.9 114l-4.2 11.4-87.5-31.9 4.2-11.4z"/>
+</svg>

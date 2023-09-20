@@ -1,0 +1,50 @@
+{
+    "bar": {
+        "labels": ["Apples", "Oranges", "Bananas"],
+        "datasets": [{
+          "label": "Fruits",
+          "data": [7, 12, 5],
+          "borderWidth": 0,
+          "backgroundColor": "orange",
+          "color": "#D35400"
+        }],
+        "ids": [1,2,3]
+    },
+    "line": {
+      "labels": ["Apples", "Oranges", "Bananas"],
+      "datasets": [{
+        "label": "Fruits",
+        "data": [7, 12, 5],
+        "borderColor": "orange"
+      }],
+      "ids": [1,2,3]
+    },
+    "area": {
+      "labels": ["Apples", "Oranges", "Bananas"],
+      "datasets": [{
+        "fill": true,
+        "label": "Fruits",
+        "data": [7, 12, 5],
+        "borderColor": "orange",
+        "backgroundColor": "rgba(255, 128, 0, 0.5)"
+      }],
+      "ids": [1,2,3]
+    },
+    "pie": {
+      "labels": ["Apples", "Oranges", "Bananas"],
+      "datasets": [
+        {
+          "label": "# of Votes",
+          "data": [7, 12, 5],
+          "backgroundColor": [
+            "orange"
+          ],
+          "borderColor": [
+            "rgba(213,84,0, 1)"
+          ],
+          "borderWidth": 1
+        }
+      ],
+      "ids": [1,2,3]
+    }
+}

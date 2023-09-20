@@ -1,3 +1,5 @@
+$background: #3b3b3b;
+
 html,
 body {
   padding: 0;
@@ -21,6 +23,6 @@ a {
   }
   body {
     color: white;
-    background: black;
+    background: $background;
   }
 }
