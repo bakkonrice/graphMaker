@@ -13,6 +13,7 @@ const Create = () => {
   
   const [chartType, setChartType] = useState("0")
   const [chartData, setChartData] = useState(JSON.stringify(defaultData.bar))
+  const [chartName, setchartName] = useState('"New Project"')
   const [counter, setCounter] = useState(0)
   let index = 0;
   
@@ -24,6 +25,8 @@ const Create = () => {
 
   useEffect(() => {
     setChartType(localStorage.getItem("chartType"));
+    console.log(localStorage.getItem("name"))
+    setchartName(localStorage.getItem("name"))
     if (localStorage.getItem("chartData") == undefined || localStorage.getItem("chartData") == "null"){
       localStorage.setItem("chartData", JSON.stringify(defaultDataList[Number(localStorage.getItem("chartType"))]))
     }
@@ -44,25 +47,29 @@ const Create = () => {
   // console.log(chartData)
   // data = JSON.parse(chartData)
   return (
-    <div className={styles.chartContainer}>
-        <div className={styles.chart}>
-        {/* <LineChart chartData={defaultData.line}/> */}
-          {chartType == "0" && <BarGraph chartData={JSON.parse(chartData)}/>}
-          {chartType == "1" && <PieChart chartData={JSON.parse(chartData)}/>}
-          {chartType == "2" && <LineChart chartData={JSON.parse(chartData)}/>}
-          {chartType == "3" && <LineChart chartData={JSON.parse(chartData)}/>}
-        </div>
-        <br/>
-        <div>
-          <Table onDownload={download}/>  
-        </div>
-        
-    </div>
+    <>
+      <div style={{display:"flex",justifyContent:'center',alignItems:"center"}}>
+      <Typography sx={{p:"100px"}}>{chartName.substring(1, chartName.length-1)}</Typography>
+          <div className={styles.chart}>
+          {/* <LineChart chartData={defaultData.line}/> */}
+            {chartType == "0" && <BarGraph chartData={JSON.parse(chartData)}/>}
+            {chartType == "1" && <PieChart chartData={JSON.parse(chartData)}/>}
+            {chartType == "2" && <LineChart chartData={JSON.parse(chartData)}/>}
+            {chartType == "3" && <LineChart chartData={JSON.parse(chartData)}/>}
+          </div>
+          <br/>
+          <div>
+            <Table onDownload={download}/>  
+          </div>
+          
+      </div>
+    </>
   )
 }
 
 import { Bar, Line, Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, LinearScale, CategoryScale, BarElement, Colors, PointElement, LineElement, Filler, ArcElement } from 'chart.js';
+import { Typography } from '@mui/material';
 
 ChartJS.register(
   LinearScale, CategoryScale, Colors, BarElement, PointElement,
