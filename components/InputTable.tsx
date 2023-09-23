@@ -25,6 +25,7 @@ export default function InputTable({name}) {
   const [showResults, setShowResults] = React.useState(false)
   const [chartColor, setChartColor] = React.useState("#ff7700")
 
+  //test
   const handleUpdateColor = () => {
     console.log("updating color")
     console.log(chartData)
