@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from '../styles/Home.module.scss'
 import Table from '../components/Table'
 import Chart from 'chart.js/auto';
 import { orange, gray } from '../components/config';
 import * as defaultData from "../components/defaultData.json"
+import { saveAs } from 'file-saver'; 
 
 const defaultDataList = [defaultData.bar, defaultData.pie, defaultData.line, defaultData.area]
 
@@ -15,17 +16,19 @@ const Create = () => {
   const [chartData, setChartData] = useState(JSON.stringify(defaultData.bar))
   const [chartName, setchartName] = useState('"New Project"')
   const [counter, setCounter] = useState(0)
-  let index = 0;
+  let index = 0; 
   
   
   const download = () => {
-    
+    const test = document.getElementById("chart") as HTMLCanvasElement
+    test.toBlob(function (blob) {
+      saveAs(blob, "chart.png")
+    })
   }
 
 
   useEffect(() => {
     setChartType(localStorage.getItem("chartType"));
-    console.log(localStorage.getItem("name"))
     setchartName(localStorage.getItem("name"))
     if (localStorage.getItem("chartData") == undefined || localStorage.getItem("chartData") == "null"){
       localStorage.setItem("chartData", JSON.stringify(defaultDataList[Number(localStorage.getItem("chartType"))]))
@@ -39,7 +42,7 @@ const Create = () => {
       setChartData(localStorage.getItem("chartData"))
       setCounter(index)
     }, 500);
-  
+
     return () => clearInterval(interval);
 }, [chartData]);
 
@@ -99,7 +102,7 @@ const baseConfig = {
 }
 
 const BarGraph = ({chartData}) => {
-  return <Bar redraw={false}  data={chartData} options={baseConfig}/>
+  return <Bar id='chart' redraw={false}  data={chartData} options={baseConfig}/>
 }
 
 const LineChart = ({chartData}) => {

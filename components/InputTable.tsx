@@ -10,6 +10,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import SquareIcon from '@mui/icons-material/Square';
 import ColorPicker from './colorPicker';
+import Modal from '@mui/material/Modal';
 import styles from '../styles/Home.module.scss'
 
 const newRow = () => {
@@ -19,20 +20,23 @@ const newRow = () => {
 
 
 
-export default function InputTable({name}) {
+export default function InputTable({name, onDownload}) {
   const [size, setSize] = React.useState(100);
   const [chartData, setChartData] = React.useState("")
   const [showResults, setShowResults] = React.useState(false)
   const [chartColor, setChartColor] = React.useState("#ff7700")
+  const ref = React.useRef(null)
 
   //test
   const handleUpdateColor = () => {
-    console.log("updating color")
-    console.log(chartData)
     if (chartData){
       let newData = JSON.parse(chartData)
-      newData["datasets"]["0"]["backgroundColor"] = `${chartColor}aa`
-      newData["datasets"]["0"]["borderColor"] = chartColor
+      if (newData["type"] == "area"){
+        newData["datasets"]["0"]["backgroundColor"] = `${chartColor}aa`
+        newData["datasets"]["0"]["borderColor"] = chartColor
+      } else {
+        newData["datasets"]["0"]["backgroundColor"] = `${chartColor}`
+      }
       setChartData(JSON.stringify(newData))
     }
   }
@@ -121,7 +125,6 @@ export default function InputTable({name}) {
 
     setChartData(JSON.stringify(newData))
 
-    console.log(newValue)
     return newValue
   };
 
@@ -156,14 +159,20 @@ export default function InputTable({name}) {
         }
       }
 
+      setRows(() => [...newRows.slice(0, newRows.length-1)]); 
+      newData["ids"] = newRows.map((row) => row["id"])
+      newData["datasets"]["0"]["data"] = [...newRows.slice(0, newRows.length-1)].map((row) => row["value"])
+      // newData["datasets"]["0"]["backgroundColor"] = chartColor
+      newData["labels"] = (newRows.slice(0, newRows.length-1)).map((row) => row["name"])
+      setChartData(JSON.stringify(newData))
 
-      setRows((prevRows) => {
-        const rowToDeleteIndex = randomInt(0, prevRows.length - 1);
-        return [
-          ...rows.slice(0, rowToDeleteIndex),
-          ...rows.slice(rowToDeleteIndex + 1),
-        ];
-      });
+      // setRows((prevRows) => {
+      //   const rowToDeleteIndex = randomInt(0, prevRows.length - 1);
+      //   return [
+      //     ...rows.slice(0, rowToDeleteIndex),
+      //     ...rows.slice(rowToDeleteIndex + 1),
+      //   ];
+      // });
     }
   };
 
@@ -196,12 +205,24 @@ export default function InputTable({name}) {
     setChartData(JSON.stringify(newData))
   };
   
+  const handleColorOpen = () => setShowResults(true)
+  const handleColorClose = () => setShowResults(false)
+
+  const download = () => {
+
+  }
+
   return (
     <>
     {/* zIndex:100, position:"absolute", width:"10vw", bottom:"100px", left:"50vw",   backgroundColor:"#ff77ff" */}
-      <div className={styles.color}>
-        {showResults ? <ColorPicker/> : null}
-      </div>
+      <Modal
+      open={showResults}
+      onClose={handleColorClose}
+      >
+        <div className={styles.color}>
+          {showResults ? <ColorPicker/> : null}
+        </div>
+      </Modal>
       <div style={{ height: 250, width: '100%', paddingTop: "20px" }}>
         <Box sx={{ width: '100%' }}>
           {/* <Typography>{name}</Typography> */}
@@ -211,7 +232,7 @@ export default function InputTable({name}) {
           <IconButton onClick={handleAddRow} sx={{zIndex:10,top:5,position:"absolute", right: "80px"}}>
               <AddIcon sx={{color:"#fff"}}/>
           </IconButton>
-          <IconButton sx={{zIndex:10, top:5,position:"absolute", right:"40px"}}>
+          <IconButton onClick={onDownload} sx={{zIndex:10, top:5,position:"absolute", right:"40px"}}>
               <DownloadIcon sx={{color:"#fff"}}/>
           </IconButton>
           <IconButton onClick={() => {

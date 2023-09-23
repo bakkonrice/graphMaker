@@ -160,7 +160,7 @@ export default function Table({onDownload}, props: Props) {
           }}
         >
           {/* <Skeleton variant="rectangular" height="100%"/> */}
-          <InputTable name={name.substring(1, name.length-1)}/>
+          <InputTable onDownload={onDownload} name={name.substring(1, name.length-1)}/>
         </StyledBox>
       </SwipeableDrawer>
     </Root>

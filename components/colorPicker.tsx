@@ -4,7 +4,7 @@ import styles from '../styles/Home.module.scss'
 
 class ColorPicker extends React.Component {
   state = {
-    background: '#ff7700',
+    background: localStorage.getItem("color"),
   };
 
   handleChange = (color) => {
