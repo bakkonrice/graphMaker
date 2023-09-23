@@ -11,4 +11,3 @@ npm run static
 ```
 
 Project is converted to .apk with [Capacitor.js](https://capacitorjs.com/)
-I used [Material](mui.com) [UI](mui.com), best component library ever!!!!
