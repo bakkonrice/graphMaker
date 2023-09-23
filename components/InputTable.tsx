@@ -3,14 +3,14 @@ import { DataGrid, GridColDef, GridRowsProp, useGridApiRef } from '@mui/x-data-g
 import { Box, Button, IconButton, Stack, Typography } from '@mui/material';
 import {
   randomInt,
-  randomUserName,
-  randomArrayItem,
 } from '@mui/x-data-grid-generator';
+import * as defaultData from "./defaultData.json"
 import DownloadIcon from '@mui/icons-material/Download';
-import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-import * as defaultData from "./defaultData.json"
+import SquareIcon from '@mui/icons-material/Square';
+import ColorPicker from './colorPicker';
+import styles from '../styles/Home.module.scss'
 
 const newRow = () => {
   return { id: Math.floor(Math.random() * 10000000000), name: "new", value: randomInt(10, 20) };
@@ -22,13 +22,33 @@ const newRow = () => {
 export default function InputTable({name}) {
   const [size, setSize] = React.useState(100);
   const [chartData, setChartData] = React.useState("")
+  const [showResults, setShowResults] = React.useState(false)
+  const [chartColor, setChartColor] = React.useState("#ff7700")
+
+  const handleUpdateColor = () => {
+    console.log("updating color")
+    console.log(chartData)
+    if (chartData){
+      let newData = JSON.parse(chartData)
+      newData["datasets"]["0"]["backgroundColor"] = `${chartColor}aa`
+      newData["datasets"]["0"]["borderColor"] = chartColor
+      setChartData(JSON.stringify(newData))
+    }
+  }
+
 
   React.useEffect(() => {
     setSize(window.screen.width)
     if (chartData != ""){
       localStorage.setItem("chartData", chartData)
     }
+    if (localStorage.getItem("color") == null){
+      localStorage.setItem("color", "#ff7700")
+    }
+    setChartColor(localStorage.getItem("color"))
     setChartData(localStorage.getItem("chartData"))
+
+    handleUpdateColor()
   })
 
   const columns: GridColDef[] = [
@@ -67,6 +87,7 @@ export default function InputTable({name}) {
     console.log(err)
   }
 
+  
 
   const handleUpdateRow = (newValue, oldValue) => {
     // setRows((prevRows) => {
@@ -94,6 +115,7 @@ export default function InputTable({name}) {
     setRows(() => [...newRows]); 
     newData["ids"] = newRows.map((row) => row["id"])
     newData["datasets"]["0"]["data"] = [...newRows].map((row) => row["value"])
+    // newData["datasets"]["0"]["backgroundColor"] = chartColor
     newData["labels"] = newRows.map((row) => row["name"])
 
     setChartData(JSON.stringify(newData))
@@ -174,45 +196,57 @@ export default function InputTable({name}) {
   };
   
   return (
-    <div style={{ height: 250, width: '100%', paddingTop: "20px" }}>
-      <Box sx={{ width: '100%' }}>
-        {/* <Typography>{name}</Typography> */}
-        <IconButton onClick={handleDeleteRow} sx={{zIndex:10, top:5,position:"absolute", right:"80px"}}>
-            <RemoveIcon sx={{color:"#fff"}}/>
-        </IconButton>
-        <IconButton onClick={handleAddRow} sx={{zIndex:10,top:5,position:"absolute", right: "40px"}}>
-            <AddIcon sx={{color:"#fff"}}/>
-        </IconButton>
-        <IconButton sx={{zIndex:10, top:5,position:"absolute", right:"0"}}>
-            <DownloadIcon sx={{color:"#fff"}}/>
-        </IconButton>
-        {/* <IconButton sx={{zIndex:10, top:5,position:"absolute", right:"40px"}}>
-            <DeleteIcon sx={{color:"#fff"}}/>
-        </IconButton> */}
-      <Stack direction="row" spacing={1}>
-        {/* <Button size="small" onClick={handleUpdateRow}>
-          Update a row
-        </Button> */}
-        {/* <Button size="small" onClick={handleDeleteRow}>
-          Delete a row
-        </Button>
-        <Button size="small" onClick={handleAddRow} sx={{alignItems:"right"}}>
-          Add a row
-        </Button> */}
-      </Stack>
-      <Box sx={{ height: 400, mt: 1 }}>
-        <DataGrid initialState={{
-    pagination: { paginationModel: { pageSize: 10 } },
-  }} apiRef={apiRef} rows={rows} columns={columns} 
-  processRowUpdate={handleUpdateRow}
-  onProcessRowUpdateError={test}
-  
-  />
-  
-  
+    <>
+    {/* zIndex:100, position:"absolute", width:"10vw", bottom:"100px", left:"50vw",   backgroundColor:"#ff77ff" */}
+      <div className={styles.color}>
+        {showResults ? <ColorPicker/> : null}
+      </div>
+      <div style={{ height: 250, width: '100%', paddingTop: "20px" }}>
+        <Box sx={{ width: '100%' }}>
+          {/* <Typography>{name}</Typography> */}
+          <IconButton onClick={handleDeleteRow} sx={{zIndex:10, top:5,position:"absolute", right:"120px"}}>
+              <RemoveIcon sx={{color:"#fff"}}/>
+          </IconButton>
+          <IconButton onClick={handleAddRow} sx={{zIndex:10,top:5,position:"absolute", right: "80px"}}>
+              <AddIcon sx={{color:"#fff"}}/>
+          </IconButton>
+          <IconButton sx={{zIndex:10, top:5,position:"absolute", right:"40px"}}>
+              <DownloadIcon sx={{color:"#fff"}}/>
+          </IconButton>
+          <IconButton onClick={() => {
+            setShowResults(!showResults)
+          }} sx={{zIndex:10, top:5,position:"absolute", right:"0"}}>
+              <SquareIcon  sx={{color:chartColor}}/>
+          </IconButton>
+          {/* <IconButton sx={{zIndex:10, top:5,position:"absolute", right:"40px"}}>
+              <DeleteIcon sx={{color:"#fff"}}/>
+          </IconButton> */}
+          {/* <button style={{zIndex: 10, top: 10, padding:"5", position: "absolute", right:"0", minWidth:"20px", minHeight:"20px"}}></button> */}
+        <Stack direction="row" spacing={1}>
+          {/* <Button size="small" onClick={handleUpdateRow}>
+            Update a row
+          </Button> */}
+          {/* <Button size="small" onClick={handleDeleteRow}>
+            Delete a row
+          </Button>
+          <Button size="small" onClick={handleAddRow} sx={{alignItems:"right"}}>
+            Add a row
+          </Button> */}
+        </Stack>
+        <Box sx={{ height: 400, mt: 1 }}>
+          <DataGrid initialState={{
+      pagination: { paginationModel: { pageSize: 10 } },
+    }} apiRef={apiRef} rows={rows} columns={columns} 
+    processRowUpdate={handleUpdateRow}
+    onProcessRowUpdateError={test}
+    
+    />
+    
+    
+        </Box>
       </Box>
-    </Box>
-    </div>
+      </div>
+    </>
   );
 }
 

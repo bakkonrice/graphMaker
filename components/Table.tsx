@@ -1,21 +1,11 @@
 import * as React from 'react';
 import { Global } from '@emotion/react';
 import { styled } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import { grey } from '@mui/material/colors';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import Skeleton from '@mui/material/Skeleton';
-import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import styles from "../styles/Home.module.scss";
 import { useEffect, useRef, useState } from 'react';
-import { Icon, IconButton } from '@mui/material';
-import DownloadIcon from '@mui/icons-material/Download';
-import DeleteIcon from '@mui/icons-material/Delete';
 import InputTable from './InputTable';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
 
 const drawerBleeding = 5;
 

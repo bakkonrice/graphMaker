@@ -159,3 +159,11 @@
 //     height: 45%;
 //   }
 // } 
+
+.color {
+  position: absolute;
+  z-index: 100;
+  left: 50%;
+  bottom: 25vh;
+  transform: translateX(-50%);
+}
